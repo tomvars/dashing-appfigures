@@ -8,10 +8,12 @@ def export_data(options)
 	end_date=options[:end_date]||Date.today-2
 	num_days=options[:num_days]||7
 	start_date= end_date - num_days
+	product_key=YOUR_PRODUCT_KEY
+	client_key=YOUR_CLIENT_KEY
 	if product == "iOS"
-		uri = URI("https://api.appfigures.com/v2/reports/sales/?group_by=dates&client_key=YOUR_CLIENT_KEY&products=YOUR_PRODUCT_KEY&start_date=#{start_date}&end_date=#{end_date}")
+		uri = URI("https://api.appfigures.com/v2/reports/sales/?group_by=dates&client_key=#{client_key}&products=#{product_key}&start_date=#{start_date}&end_date=#{end_date}")
 	elsif product =="Play" || product=="Android"
-		uri = URI("https://api.appfigures.com/v2/reports/sales/?group_by=dates&client_key=YOUR_CLIENT_KEY&products=YOUR_PRODUCT_KEY&start_date=#{start_date}&end_date=#{end_date}")
+		uri = URI("https://api.appfigures.com/v2/reports/sales/?group_by=dates&client_key=#{client_key}&products=#{product_key}&start_date=#{start_date}&end_date=#{end_date}")
 	end
 	hash_output=Hash.new
 	Net::HTTP.start(uri.host, uri.port,
@@ -19,7 +21,7 @@ def export_data(options)
 	  :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
 
 	  request = Net::HTTP::Get.new uri.request_uri
-	  request.basic_auth 'YOUR_USERNAME', 'T0getherapr0ject'
+	  request.basic_auth 'YOUR_USERNAME', 'YOUR_PASSWORD'
 	  response = http.request request # Net::HTTPResponse object
 	  
 	  hash_output= JSON.parse(response.body)
@@ -78,14 +80,3 @@ def get_stacked_area_series_downloads(options)
 	series=[hashx,hashy]
 	return series
 end
-# [
-# 	{"name"=>"1", "data"=>[{:x=>"1406851200", :y=>148}, {:x=>"1407456000", :y=>917},{:x=>"1408060800", :y=>907},
-#   {:x=>"1408665600", :y=>981}, {:x=>"1409270400", :y=>871},{:x=>"1409875200", :y=>699}]
-#   },
-#  {"name"=>"2", "data"=>[{:x=>"1406851200", :y=>39}, {:x=>"1407456000", :y=>298}, {:x=>"1408060800", :y=>308},
-#   {:x=>"1408665600", :y=>311}, {:x=>"1409270400", :y=>277}, {:x=>"1409875200", :y=>245}]
-#   },
-#    {"name"=>"3+", "data"=>[{:x=>"1406851200", :y=>29}, {:x=>"1407456000", :y=>119}, {:x=>"1408060800", :y=>116},
-#     {:x=>"1408665600", :y=>133}, {:x=>"1409270400", :y=>157}, {:x=>"1409875200", :y=>128}]
-#   }
-# ]
