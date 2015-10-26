@@ -1,5 +1,4 @@
-#Thomas Varsavsky, 09/2014
-#Togethera
+#Thomas Varsavsky, 10/2015
 require 'net/https'
 require 'json'
 require 'date'
